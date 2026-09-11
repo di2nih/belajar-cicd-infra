@@ -1,0 +1,25 @@
+name: Infra Health Check Simulator
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  check-system:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Code
+        uses: actions/checkout@v4
+
+      - name: Print System Info
+        run: |
+          echo "=== MEMERIKSA SPESIFIKASI RUNNER ==="
+          uname -a
+          df -h
+          free -m
+
+      - name: Test Connectivity
+        run: |
+          echo "=== SIMULASI PING NETWORK ==="
+          ping -c 3 google.com
