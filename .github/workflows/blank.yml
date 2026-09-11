@@ -22,4 +22,4 @@ jobs:
       - name: Test Connectivity
         run: |
           echo "=== SIMULASI PING NETWORK ==="
-          ping -c 3 google.com
+          curl -I https://google.com
