@@ -1,0 +1,19 @@
+name: Test Self-Hosted Runner Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test-infra:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: System Info Check
+        run: |
+          echo "Running on local container!"
+          hostname
+          whoami
+          uname -a
