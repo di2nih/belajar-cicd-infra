@@ -12,13 +12,17 @@ jobs:
       - name: Check Out Code
         uses: actions/checkout@v4
 
-      - name: Execute Remote Commands via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.TARGET_HOST }}
-          username: ${{ secrets.TARGET_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
+      - name: Execute Remote Commands via Native SSH
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOST: ${{ secrets.TARGET_HOST }}
+          USER: ${{ secrets.TARGET_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 $USER@$HOST << 'EOF'
             echo "=== Executing Deployment on Debian Target ==="
             hostname
             uptime
