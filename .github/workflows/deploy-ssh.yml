@@ -1,0 +1,25 @@
+name: Deploy Infrastructure via SSH
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Check Out Code
+        uses: actions/checkout@v4
+
+      - name: Execute Remote Commands via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.TARGET_HOST }}
+          username: ${{ secrets.TARGET_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "=== Executing Deployment on Debian Target ==="
+            hostname
+            uptime
+            uname -a
